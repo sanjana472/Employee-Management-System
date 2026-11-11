@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EMS | Employee Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" href="#"><span class="brand-icon">●</span><span>EMS<small>Employee Management System</small></span></a>
+    <nav>
+      <button class="nav-item active" data-view="dashboard"><span>⌂</span>Dashboard</button>
+      <button class="nav-item" data-view="employees"><span>♙</span>Employees <i>⌄</i></button>
+      <button class="nav-item" data-view="departments"><span>▱</span>Departments</button>
+      <button class="nav-item" data-view="attendance"><span>▣</span>Attendance</button>
+      <button class="nav-item" data-view="leave"><span>▦</span>Leave Management <i>⌄</i></button>
+      <button class="nav-item" data-view="payroll"><span>▣</span>Payroll & Salary <i>⌄</i></button>
+      <button class="nav-item" data-view="reports"><span>▥</span>Reports & Analytics <i>⌄</i></button>
+      <button class="nav-item" data-view="settings"><span>⚙</span>Settings</button>
+    </nav>
+    <div class="sidebar-promo"><div class="promo-art">▥</div><strong>Manage People<br>Build a Better Workplace</strong><span class="promo-line"></span></div>
+    <div class="sidebar-foot">EMS WORKSPACE <span>v1.0</span></div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-btn" id="menuBtn">☰</button>
+      <div class="top-title">Employee Management System</div>
+      <div class="search-wrap"><span>⌕</span><input id="globalSearch" placeholder="Search employees, departments..."></div>
+      <button class="bell" title="Notifications">♧<b>1</b></button>
+      <div class="profile"><div class="profile-avatar">S</div><div><strong>Sanjana S J</strong><small>Admin</small></div><span>⌄</span></div>
+    </header>
+
+    <section class="content">
+      <div class="welcome">
+        <div><div class="eyebrow">YOUR ORGANIZATION AT A GLANCE</div><h1 id="welcomeTitle">Welcome Back, <em>Sanjana S J</em> 👋</h1><p>Here's what's happening in your organization today.</p></div>
+        <div class="date-chip">▦ <span id="todayDate"></span></div>
+      </div>
+
+      <section id="dashboardView">
+        <div class="stats-grid">
+          <article class="stat-card blue-card"><div class="stat-icon">♟</div><div class="stat-copy"><span>Total Employees</span><strong id="totalEmployees">—</strong><small>People in your organization</small></div><div class="stat-watermark">♟</div></article>
+          <article class="stat-card green-card"><div class="stat-icon">✓</div><div class="stat-copy"><span>Active Employees</span><strong id="activeEmployees">—</strong><small>Currently active</small></div><div class="stat-watermark">✓</div></article>
+          <article class="stat-card purple-card"><div class="stat-icon">▱</div><div class="stat-copy"><span>Departments</span><strong id="departmentCount">—</strong><small>Across your organization</small></div><div class="stat-watermark">▦</div></article>
+          <article class="stat-card orange-card"><div class="stat-icon">▣</div><div class="stat-copy"><span>Today's Attendance</span><strong id="attendanceCount">—</strong><small>Attendance module coming next</small></div><div class="stat-watermark">◷</div></article>
+        </div>
+
+        <div class="middle-grid">
+          <section class="panel growth-panel"><div class="panel-head"><div><span class="panel-symbol">▥</span><div><h2>Employee Growth Trend</h2><p>Workforce overview</p></div></div><span class="select-pill">Last 6 Months</span></div><div class="chart-area"><canvas id="growthChart"></canvas></div></section>
+          <section class="panel department-panel"><div class="panel-head"><div><span class="panel-symbol">◉</span><div><h2>Employees by Department</h2><p>Department distribution</p></div></div></div><div class="donut-layout"><div class="donut-wrap"><canvas id="departmentChart"></canvas><div class="donut-center"><strong id="donutTotal">0</strong><small>Employees</small></div></div><div id="departmentLegend" class="legend"></div></div></section>
+          <section class="panel quick-panel"><div class="panel-head"><div><span class="panel-symbol">ϟ</span><div><h2>Quick Actions</h2><p>Common tasks</p></div></div></div><div class="quick-grid"><button class="quick-action qa-blue" id="quickAddEmployee"><span>♙+</span>Add Employee</button><button class="quick-action qa-purple" id="quickAddDepartment"><span>▱</span>Add Department</button><button class="quick-action qa-green" data-coming="Attendance"><span>▣</span>Mark Attendance</button><button class="quick-action qa-orange" data-coming="Payroll"><span>▣</span>Process Salary</button></div></section>
+        </div>
+
+        <div class="bottom-grid">
+          <section class="panel recent-panel"><div class="panel-head"><div><span class="panel-symbol">♟</span><div><h2>Recent Employees</h2><p>Latest people added to your team</p></div></div><button class="text-link" data-go="employees">View All →</button></div><div class="table-wrap"><table><thead><tr><th>EMP ID</th><th>NAME</th><th>DEPARTMENT</th><th>DESIGNATION</th><th>JOINING DATE</th><th>STATUS</th></tr></thead><tbody id="recentEmployees"></tbody></table></div></section>
+          <section class="panel activity-panel"><div class="panel-head"><div><span class="panel-symbol">⌁</span><div><h2>Recent Activities</h2><p>Latest workspace updates</p></div></div></div><div class="activity-list"><div class="activity"><span class="activity-dot green-dot">♙</span><div><strong>Employee records synced</strong><p>Employee directory connected to PostgreSQL.</p></div><time>Just now</time></div><div class="activity"><span class="activity-dot purple-dot">▣</span><div><strong>Department overview ready</strong><p>Manage your teams from one place.</p></div><time>Today</time></div><div class="activity"><span class="activity-dot orange-dot">✦</span><div><strong>Welcome to EmployeeHub</strong><p>Your workspace is ready to use.</p></div><time>Today</time></div></div></section>
+        </div>
+      </section>
+
+      <section id="employeesView" class="panel data-view hidden">
+        <div class="view-heading"><div><h2>Employee Directory</h2><p>Manage employee information and department assignments.</p></div><button class="primary-btn" id="addEmployeeBtn">＋ Add Employee</button></div>
+        <div class="toolbar"><input id="employeeSearch" placeholder="Search by name, email or designation..."><span id="employeeTotal" class="muted"></span></div>
+        <div class="table-wrap"><table><thead><tr><th>ID</th><th>EMPLOYEE</th><th>EMAIL</th><th>DEPARTMENT</th><th>DESIGNATION</th><th>SALARY</th><th>JOINED</th><th>ACTIONS</th></tr></thead><tbody id="employeesTable"></tbody></table></div>
+      </section>
+
+      <section id="departmentsView" class="panel data-view hidden">
+        <div class="view-heading"><div><h2>Departments</h2><p>Organize employees into business teams.</p></div><button class="primary-btn" id="addDepartmentBtn">＋ Add Department</button></div>
+        <div id="departmentCards" class="department-cards"></div>
+      </section>
+
+      <section id="placeholderView" class="panel placeholder hidden">
+        <div class="placeholder-icon">✦</div><h2 id="placeholderTitle">Coming soon</h2><p>This module is planned for the next development phase.</p><span>Employee and Department management are connected to PostgreSQL.</span>
+      </section>
+    </section>
+    <footer class="footer">© 2026 Employee Management System <span>Designed for better workplaces</span></footer>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-backdrop hidden" id="employeeModal">
+  <div class="modal">
+    <div class="modal-head"><div><h2 id="employeeModalTitle">Add Employee</h2><p>Enter employee details below.</p></div><button class="close-btn" data-close="employeeModal">×</button></div>
+    <form id="employeeForm">
+      <input type="hidden" id="employeeId">
+      <div class="form-grid">
+        <label>Full name<input id="empName" required placeholder="Employee name"></label>
+        <label>Email address<input id="empEmail" type="email" required placeholder="name@company.com"></label>
+        <label>Phone number<input id="empPhone" placeholder="Phone"></label>
+        <label>Designation<input id="empDesignation" placeholder="e.g. Software Engineer"></label>
+        <label>Department<select id="empDepartment"><option value="">No department</option></select></label>
+        <label>Salary (INR)<input id="empSalary" type="number" min="0" step="0.01" placeholder="45000"></label>
+        <label class="full-field">Joining date<input id="empJoiningDate" type="date"></label>
+      </div>
+      <div class="modal-actions"><button type="button" class="secondary-btn" data-close="employeeModal">Cancel</button><button class="primary-btn" type="submit">Save Employee</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-backdrop hidden" id="departmentModal">
+  <div class="modal small-modal">
+    <div class="modal-head"><div><h2 id="departmentModalTitle">Add Department</h2><p>Create a department for your organization.</p></div><button class="close-btn" data-close="departmentModal">×</button></div>
+    <form id="departmentForm">
+      <input type="hidden" id="departmentId">
+      <label>Department name<input id="deptName" required placeholder="e.g. Engineering"></label>
+      <label>Description<textarea id="deptDescription" rows="3" placeholder="Brief description"></textarea></label>
+      <div class="modal-actions"><button type="button" class="secondary-btn" data-close="departmentModal">Cancel</button><button class="primary-btn" type="submit">Save Department</button></div>
+    </form>
+  </div>
+</div>
+
+<script src="/js/app.js"></script>
+</body></html>
